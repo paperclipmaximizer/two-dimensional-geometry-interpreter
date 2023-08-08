@@ -198,4 +198,16 @@ fun eval_prog (e,env) =
 (* CHANGE: Add a case for Shift expressions *)
 
 (* preprocessing function, to be evaluated by eval_prog(preprocess_prog e, ) *)
-fun preprocess_prog(e1: geom_exp): geom_exp = e1 (* stub *)
+fun preprocess_prog(e: geom_exp): geom_exp = (* stub *)
+	case e of
+		 LineSegment (x1,y1,x2,y2) =>
+			if real_close(x1,x2) andalso real_close(y1,y2)
+			then Point (x1,y1)
+			else if x1 < x2
+			then LineSegment (x1,y1,x2,y2)
+			else LineSegment (x2,y2,x1,y1)
+		| Let (s,e1,e2) => Let (s, preprocess_prog e1, preprocess_prog e2)
+		| Intersect (e1,e2) => Intersect (preprocess_prog e1, preprocess_prog e2)
+(*		| Shift (e1,x,y) => Shift (preprocess_prog e1, x, y) *)
+		| _ => e
+

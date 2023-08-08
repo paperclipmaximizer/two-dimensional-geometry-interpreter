@@ -19,14 +19,13 @@ datatype geom_exp =
 	 | Intersect of geom_exp * geom_exp (* intersection expression *)
 	 | Let of string * geom_exp * geom_exp (* let s = e1 in e2 *)
 	 | Var of string
-(* CHANGE add shifts for expressions of the form Shift(deltaX, deltaY, exp *)
+ (*    | Shift of real * real * geom_exp - shifts for expressions of the form Shift(deltaX, deltaY, exp) *)
 
 exception BadProgram of string
 exception Impossible of string
 
 (* helper functions for comparing real numbers since rounding means
    we should never compare for equality *)
-
 val epsilon = 0.00001
 
 fun real_close (r1,r2) =
@@ -35,6 +34,7 @@ fun real_close (r1,r2) =
 (* notice curried *)
 fun real_close_point (x1,y1) (x2,y2) =
     real_close(x1,x2) andalso real_close(y1,y2)
+
 
 (* helper function to return the Line or VerticalLine containing
    points (x1,y1) and (x2,y2). Actually used only when intersecting
@@ -197,4 +197,5 @@ fun eval_prog (e,env) =
       | Intersect(e1,e2) => intersect(eval_prog(e1,env), eval_prog(e2, env))
 (* CHANGE: Add a case for Shift expressions *)
 
-(* CHANGE: Add function preprocess_prog of type geom_exp -> geom_exp *)
+(* preprocessing function, to be evaluated by eval_prog(preprocess_prog e, ) *)
+fun preprocess_prog(e1: geom_exp): geom_exp = e1 (* stub *)

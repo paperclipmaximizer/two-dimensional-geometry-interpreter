@@ -110,7 +110,6 @@ end
 class Point < GeometryValue
   # *add* methods to this class -- do *not* change given code and do not
   # override any methods
-
   # Note: You may want a private helper method like the local
   # helper function inbetween in the ML code
   attr_reader :x, :y
@@ -121,8 +120,6 @@ class Point < GeometryValue
 end
 
 class Line < GeometryValue
-  # *add* methods to this class -- do *not* change given code and do not
-  # override any methods
   attr_reader :m, :b
   def initialize(m,b)
     @m = m
@@ -151,6 +148,21 @@ class LineSegment < GeometryValue
     @y1 = y1
     @x2 = x2
     @y2 = y2
+  end
+  def preprocess_prog
+    if real_close_point(@x1,@y1,@x2,@y2)
+      Point.new(@x1,@y1)
+    elsif real_close(@x1,@x2)
+      if @y1 < @y2
+        self
+      else
+        LineSegment.new(@x2,@y2,@x1,@y1)
+      end
+    elsif @x1 < @x2
+      self
+    else
+      LineSegment.new(@x2,@y2,@x1,@y1)
+    end
   end
 end
 

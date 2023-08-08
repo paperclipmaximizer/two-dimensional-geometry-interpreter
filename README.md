@@ -39,7 +39,7 @@ The language is a small language that can be used to describe two-dimensional ge
 Do not use equality signifiers on floats. Instead use a tolerance value to determine if two floats are equal. This is because floats are not stored as exact values, but as approximations. This means that two floats that should be equal may not be equal when compared using the equality signifier.
 
 #### Expressional Preprocessing
-The expressions are preprocessed to, and simplified in, the case of `LineSegement` that violate the following invariants:
+The expressions are preprocessed, and simplified, in the case of `LineSegement` that violate the following invariants:
 - Line segments that have similar endpoints as their segment points are converted to a point.
 -  Line segments that have first end-points smaller than the second end-point are swapped.
 
